@@ -203,5 +203,13 @@ button {
         --_color:var(--green-darkest);
         translate: 2px 1px;
     }
+    &.saveTree{
+        --_opacity: 1;
+        bottom: 3rem;
+    }
+    &.loadTree{
+        --_opacity: 1;
+        bottom: 1.5rem;
+    }
 
 }

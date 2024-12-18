@@ -78,28 +78,34 @@ function dragAndDropAPI(){
     // todo: feature detection for View Transition API
     const viewTransition = document.startViewTransition(() => {
       if (decoration) {
-        decoration.dataset.sound ? audioFile = `${decorationId}.wav` : audioFile = 'slide.wav'
-        const audioElement = new Audio(`audio/${audioFile}`)
-        audioElement.play()
-        // sounds from: https://mixkit.co/free-sound-effects/
-        // license: https://mixkit.co/license/
-
-        dropArea.appendChild(decoration)
-        
-        const dropAreaRect = dropArea.getBoundingClientRect()
-
-        decoration.style.position = 'absolute'
-          
-        const offsetX = Math.round(event.clientX) - Math.round(dropAreaRect.left) - 15
-        const offsetY = Math.round(event.clientY) - Math.round(dropAreaRect.top) - 10 
-
-        decoration.style.setProperty('--offset-x', `${offsetX}px`)
-        decoration.style.setProperty('--offset-y', `${offsetY}px`)        
+        playSound(decoration);
+        dropDecoration(decoration, event);
+    
       }
     })
 
     event.preventDefault()
   })
+  function playSound(decoration){
+    decoration.dataset.sound ? audioFile = `${decorationId}.wav` : audioFile = 'slide.wav'
+    const audioElement = new Audio(`audio/${audioFile}`)
+    audioElement.play()
+    // sounds from: https://mixkit.co/free-sound-effects/
+    // license: https://mixkit.co/license/
+  }
+  function dropDecoration(decoration, event){
+    dropArea.appendChild(decoration)
+        
+    const dropAreaRect = dropArea.getBoundingClientRect()
+
+    decoration.style.position = 'absolute'
+      
+    const offsetX = Math.round(event.clientX) - Math.round(dropAreaRect.left) - 15
+    const offsetY = Math.round(event.clientY) - Math.round(dropAreaRect.top) - 10 
+
+    decoration.style.setProperty('--offset-x', `${offsetX}px`)
+    decoration.style.setProperty('--offset-y', `${offsetY}px`)    
+  }
 }
 
 // Speech API
@@ -143,4 +149,26 @@ function speechAPI(){
       
     } 
   })
+}
+
+const saveTreeBtn = document.querySelector('button.saveTree');
+saveTreeBtn.addEventListener('click', saveTree);
+
+const loadTreeBtn = document.querySelector('button.loadTree');
+loadTreeBtn.addEventListener('click', loadTree);
+
+function saveTree(){
+  console.log("ik ga wat doen");
+  const treeToTakeHome = document.querySelector('section.christmas-tree ul.tree').innerHTML;
+  console.log(treeToTakeHome);
+  localStorage.setItem('myTree', treeToTakeHome);
+  console.log(localStorage.getItem('myTree'));
+}
+
+
+function loadTree(){
+  console.log("ik ga wat doen");
+  const treeToReplace = document.querySelector('section.christmas-tree ul.tree');
+  const savedTree = localStorage.getItem('myTree');
+  treeToReplace.innerHTML = savedTree;
 }
